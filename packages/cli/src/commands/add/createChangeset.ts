@@ -57,7 +57,9 @@ async function getPackagesToRelease(
       }
     );
   }
-
+  if (allPackages.length === 0) {
+    throw new Error('no packages were found')
+  }
   if (allPackages.length > 1) {
     const unchangedPackagesNames = allPackages
       .map(({ packageJson }) => packageJson.name)
@@ -101,7 +103,9 @@ export default async function createChangeset(
   allPackages: Package[]
 ): Promise<{ confirmed: boolean; summary: string; releases: Array<Release> }> {
   const releases: Array<Release> = [];
-
+  if (allPackages.length === 0) {
+    throw new Error('no packages were found')
+  }
   if (allPackages.length > 1) {
     const packagesToRelease = await getPackagesToRelease(
       changedPackages,
